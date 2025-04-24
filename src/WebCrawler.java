@@ -19,13 +19,18 @@ public class WebCrawler {
     }
 
     public void startCrawling(String startUrl){
-        try{
             //System.out.println("inside startCrawling function");
             executorService.submit(new CrawlerWorker(startUrl,depthToCrawl,0,visitedUrls,executorService,logger));
+            try { //time to spawn more tasks
+                Thread.sleep(10000); // Wait 10 seconds (you can adjust)
+            } catch (InterruptedException e) {
+                logger.warning("Sleep interrupted");
+            }
             executorService.shutdown();
-            executorService.awaitTermination(10, TimeUnit.MINUTES);
-        } catch (InterruptedException e){
-            logger.severe("Crawling was Interrupted: "+e.getMessage());
-        }
+            try {
+                executorService.awaitTermination(10, TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+                logger.severe("Crawling was Interrupted: " + e.getMessage());
+            }
     }
 }

@@ -31,7 +31,8 @@ public class CrawlerWorker implements Runnable{
         if(currentDepth > depthToCrawl || visitedUrls.putIfAbsent(url,true)!=null) {
             return;
         }
-            logger.info("Crawling "+url+" at depth "+currentDepth);
+        System.out.println(Thread.currentThread().getName() + " crawling: " + url);
+            logger.info("Crawling at depth "+currentDepth);
             //System.out.println("inside run");
             //writing url to the file
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("urlOutput.txt",true))){
